@@ -1,0 +1,23 @@
+void countWords(const string& s, unordered_map<string,int>& m){
+    stringstream ss(s);
+    string word;
+    while(ss >> word){
+        m[word]++;
+    }
+}
+class Solution {
+public:
+    vector<string> uncommonFromSentences(string s1, string s2) {
+        vector<string>v;
+        unordered_map<string,int>m;
+
+        countWords(s1,m); // counting words in both sentences.
+        countWords(s2,m);
+        for(auto c:m){
+            if(c.second == 1){
+                v.push_back(c.first);
+            }
+        }
+        return v;
+    }
+};
