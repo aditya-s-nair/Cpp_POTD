@@ -1,0 +1,57 @@
+class Solution {
+public:
+    long getPalindrome(long leftpart,bool even){
+        long res = leftpart;
+        if(!even){
+            leftpart/=10;
+        }
+        while(leftpart>0){
+            res = (res*10) + (leftpart%10);
+            leftpart/=10;
+        }
+        return res;
+    }
+    string nearestPalindromic(string n) {
+        int ind = n.length()/2;
+        bool even = n.length()%2 == 0;
+        if(even){
+            ind -= 1;
+        }
+        long leftpart = stol(n.substr(0,ind+1));
+
+        vector<long>v;
+        // comverting the end digits into start digits like 12345 into 12321
+        v.push_back(getPalindrome(leftpart,even));
+
+        // incrementing the middle.
+        v.push_back(getPalindrome(leftpart+1,even));
+
+        //decrementing the middle.
+        v.push_back(getPalindrome(leftpart-1,even));
+
+        //reduce the digits by 1.
+        v.push_back(pow(10,n.length()-1)-1);
+
+        // increase the digits by 1.
+        v.push_back(pow(10,n.length())+1);
+        long res = 0; // just a variable
+        long diff = LONG_MAX;
+        long num = stoll(n); //the string has been converted to long long.
+
+
+
+        for(auto c:v){
+            if(c==num) continue;
+            long curr = abs(num - c); // the current diff
+
+            if(diff>curr){
+                res = c; 
+                diff = curr;
+            }
+            else if( diff == curr){
+                res = min(res,c);
+            }
+        }
+        return to_string(res);
+    }
+};
